@@ -1,0 +1,37 @@
+﻿@model WebAnnotator.Models.NewsAnnotate
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>News Details</h2>
+
+<div>
+    <h4>News</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.News)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.News)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsTrue)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsTrue)
+        </dd>
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

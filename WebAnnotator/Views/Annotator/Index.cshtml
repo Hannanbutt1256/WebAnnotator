@@ -1,0 +1,70 @@
+﻿@model WebAnnotator.Models.NewsAnnotate
+
+@{
+    ViewBag.Title = "Annotator";
+}
+<style>
+    p {
+        font-family: 'Noto Nastaliq Urdu', sans-serif;
+        padding-top:8px
+    }
+</style>
+<h2>Annotate News</h2>
+
+@if (Model != null)
+{
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <i class="fas fa-newspaper fa-2x"></i>
+                        <strong> News:</strong>
+                        <p style="line-height: 2.5;" >@Model.News</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group mt-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="font-weight-bold">Category</label>
+                        @Html.DropDownList("category", new SelectList(new[] { "Business", "Entertainment", "Health", "Politics", "Science", "Sports", "Weird", "World" ,"Crime" , "Economics" , "Fashion" , "Environment" ,"Technology" ,  }), "Select A Category", new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="font-weight-bold">Is True?</label>
+                        <div class="form-check form-check-inline, col">
+                            <label class="form-check-label">
+                                @Html.RadioButtonFor(model => model.IsTrue, true, new { @class = "form-check-input", required = "required" }) Yes
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline, col">
+                            <label class="form-check-label">
+                                @Html.RadioButtonFor(model => model.IsTrue, false, new { @class = "form-check-input", required = "required" }) No
+                            </label>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.IsTrue, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg animate__animated animate__bounce">
+                    <i class="fas fa-paper-plane"></i> Submit Feedback
+                </button>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>@ViewBag.Message</p>
+}

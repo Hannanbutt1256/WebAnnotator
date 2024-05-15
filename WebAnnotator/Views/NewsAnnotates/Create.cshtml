@@ -1,0 +1,83 @@
+﻿@model WebAnnotator.Models.NewsAnnotate
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create News Article</h2>
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <p class="text-danger">@ViewBag.ErrorMessage</p>
+}
+
+<div class="row">
+
+
+    <div class="col-md-6">
+        <div class="border-right pl-3" style="padding-right:10px;">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.News, "News (Urdu)")
+                    @Html.TextAreaFor(model => model.News, new { @class = "form-control", required = "required" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Category, "Category")
+                    @Html.DropDownListFor(model => model.Category, new SelectList(new[] { "Business", "Entertainment", "Health", "Politics", "Science", "Sports", "Weird", "World", "Crime", "Economics", "Fashion" , "Environment", "Technology" }), "Select A Category", new { @class = "form-control", required = "required" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IsTrue, "Is True?")
+                    <div>
+                        <label>
+                            @Html.RadioButtonFor(model => model.IsTrue, true, new { required = "required" }) Yes
+                        </label>
+                        <label>
+                            @Html.RadioButtonFor(model => model.IsTrue, false, new { required = "required" }) No
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" name="submitButton" value="SubmitAll">Submit All Data</button>
+            }
+        </div>
+    </div>
+    <div class="col-md-6">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.News, "News (Urdu)")
+                @Html.TextAreaFor(model => model.News, new { @class = "form-control", required = "required" })
+            </div>
+
+            <button type="submit" class="btn btn-primary" name="submitButton" value="SubmitNews">Submit News Only</button>
+        }
+    </div>
+</div>
+
+<style>
+    .border-right {
+        border-right: 1px solid #ccc;
+        padding-right: 15px;
+    }
+</style>
+
+<br />
+<br />
+@if (User.IsInRole("Admin"))
+{
+    <p>Admin Panel</p>
+    <ul class="nav">
+        <li>@Html.ActionLink("Index", "Index", "NewsAnnotates", new { area = "" }, new { @class = "nav-link" })</li>
+    </ul>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

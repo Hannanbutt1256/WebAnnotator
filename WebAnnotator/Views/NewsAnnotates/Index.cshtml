@@ -1,0 +1,108 @@
+﻿@model PagedList.IPagedList<WebAnnotator.Models.NewsAnnotate>
+@using PagedList.Mvc
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>News List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div>
+    @using (Html.BeginForm("Index", "NewsAnnotates", FormMethod.Get))
+    {
+        <label>Show</label>
+        @Html.DropDownList("pageSize", new List<SelectListItem>
+        {
+            new SelectListItem { Text = "10", Value = "10" },
+            new SelectListItem { Text = "25", Value = "25" },
+            new SelectListItem { Text = "50", Value = "50" },
+            new SelectListItem { Text = "100", Value = "100" }
+        })
+        <label>entries</label>
+
+        <label>Search:</label>
+        <input type="text" name="searchBy" value="@ViewBag.SearchBy" />
+        <input type="submit" value="Search" />
+    }
+</div>
+
+<script>
+    function changePageSize() {
+        var selectedPageSize = $("#pageSize").val();
+        window.location.href = "/Annotator/Index?page=1&pageSize=" + selectedPageSize;
+    }
+</script>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("News", "Index", new { sortOrder = "News" })
+        </th>
+        <th>
+            @Html.ActionLink("Category", "Index", new { sortOrder = "Category" })
+        </th>
+        <th>
+            @Html.ActionLink("Is True", "Index", new { sortOrder = "IsTrue" })
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="font-family: 'Noto Nastaliq Urdu', sans-serif ; line-height: 2.5">
+                @Html.DisplayFor(modelItem => item.News)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsTrue)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+
+<style>
+    .pagination li:not(:last-child) {
+        margin-right: 10px; /* Adjust the spacing as needed */
+    }
+</style>
+
+<div class="text-center">
+    Page @(Model.PageNumber) of @Model.PageCount
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = ViewBag.PageSize }),
+                new PagedListRenderOptions
+                {
+                    LiElementClasses = new List<string> { "page-item" },
+                    LinkToFirstPageFormat = "««",
+                    LinkToPreviousPageFormat = "«",
+                    LinkToNextPageFormat = "»",
+                    LinkToLastPageFormat = "»»",
+                    DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+                    DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+                    DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+                    DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    MaximumPageNumbersToDisplay = 5, // Adjust this value based on your preference
+                    Display = PagedListDisplayMode.IfNeeded
+                })
+        </ul>
+    </nav>
+</div>
+
+
+
+
